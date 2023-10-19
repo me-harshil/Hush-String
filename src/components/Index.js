@@ -1,11 +1,12 @@
-import React from 'react'
+import React from "react";
+import Image from "next/image";
 
 const Index = () => {
   return (
     <div>
-        {/* <img src="/home.jpg" alt="home" /> */}
+      <Image src="/home.jpg" alt="home" width={672} height={448} priority/>
     </div>
-  )
-}
+  );
+};
 
-export default Index
+export default Index;
