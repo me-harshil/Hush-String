@@ -1,8 +1,31 @@
-import React from "react";
+"use client";
+import React, { useState, useContext } from "react";
 import Image from "next/image";
+import { CartContext } from "@/app/Context/cart-provider";
 
 const ProductInfo = ({ params }) => {
+  const { addToCart } = useContext(CartContext);
+
   const slug = params.slug;
+
+  const [pincode, setPincode] = useState("");
+  const [delivery, setDelivery] = useState(null);
+
+  const checkDelivery = async () => {
+    let pins = await fetch("http://localhost:3000/api/pincode");
+    let pinsJson = await pins.json();
+
+    if (pinsJson.includes(parseInt(pincode))) {
+      setDelivery(true);
+    } else {
+      setDelivery(false);
+    }
+  };
+
+  const onChange = (e) => {
+    setPincode(e.target.value);
+  };
+
   return (
     <>
       <section className="text-gray-600 body-font overflow-hidden">
@@ -18,10 +41,10 @@ const ProductInfo = ({ params }) => {
             />
             <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
               <h2 className="text-sm title-font text-gray-500 tracking-widest">
-                BRAND NAME
+                HUSHSTRING
               </h2>
               <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">
-                The Catcher in the Rye
+                Where Melodies Whisper on Strings
               </h1>
               <div className="flex mb-4">
                 <span className="flex items-center">
@@ -163,9 +186,25 @@ const ProductInfo = ({ params }) => {
               </div>
               <div className="flex">
                 <span className="title-font font-medium text-2xl text-gray-900">
-                  $58.00
+                  ₹2,900
                 </span>
-                <button className="flex ml-14 text-white bg-blue-500 border-0 py-2 px-6 focus:outline-none hover:bg-blue-600 rounded">
+                <button className="flex ml-8 text-white bg-blue-500 border-0 py-2 px-2 md:px-6 focus:outline-none hover:bg-blue-600 rounded">
+                  Buy Now
+                </button>
+                {/* addToCart(itemCode, quantity, price, size, varient, name)  */}
+                <button
+                  onClick={() => {
+                    addToCart(
+                      slug,
+                      1,
+                      2900,
+                      "concert",
+                      "brown",
+                      "concert ukulele"
+                    );
+                  }}
+                  className="flex ml-4 text-white bg-blue-500 border-0 py-2 px-2 md:px-6 focus:outline-none hover:bg-blue-600 rounded"
+                >
                   Add to Cart
                 </button>
                 <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
@@ -181,6 +220,35 @@ const ProductInfo = ({ params }) => {
                   </svg>
                 </button>
               </div>
+              <div className="pincode flex space-x-2 mt-6">
+                <input
+                  type="text"
+                  name="pincode"
+                  id="pincode"
+                  className="px-2 border-2 border-slate-400 rounded-md"
+                  onChange={onChange}
+                  value={pincode}
+                  placeholder="Enter Pincode"
+                />
+                <button
+                  onClick={checkDelivery}
+                  className="text-white bg-blue-500 border-0 py-2 px-6 focus:outline-none hover:bg-blue-600 rounded"
+                >
+                  Check
+                </button>
+              </div>
+
+              {delivery !== null && delivery && (
+                <div className="text-green-700 text-sm mt-3">
+                  Yay! Delivery available in your area.
+                </div>
+              )}
+
+              {delivery !== null && !delivery && (
+                <div className="text-red-700 text-sm mt-3">
+                  Sorry! Delivery not available in your area.
+                </div>
+              )}
             </div>
           </div>
         </div>
