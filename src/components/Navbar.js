@@ -6,6 +6,7 @@ import { GrFormClose } from "react-icons/gr";
 import { HiOutlinePlusCircle, HiOutlineMinusCircle } from "react-icons/hi";
 import { BsFillBagCheckFill } from "react-icons/bs";
 import { CartContext } from "@/app/Context/cart-provider";
+import { MdAccountCircle } from "react-icons/md";
 
 const Navbar = () => {
   const {
@@ -59,11 +60,11 @@ const Navbar = () => {
               Drum Kit
             </Link>
           </nav>
-          <div
-            className="cart absolute right-0 mx-4 cursor-pointer"
-            onClick={toggleCart}
-          >
-            <AiOutlineShoppingCart className="text-2xl" />
+          <div className="flex cart absolute right-0 mx-4 cursor-pointer">
+            <Link href={"/login"}>
+              <MdAccountCircle className="text-2xl mx-2" />
+            </Link>
+            <AiOutlineShoppingCart className="text-2xl" onClick={toggleCart} />
           </div>
           <div
             ref={ref}
