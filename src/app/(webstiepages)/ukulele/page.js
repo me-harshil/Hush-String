@@ -3,11 +3,13 @@ import Image from "next/image";
 import Link from "next/link";
 
 async function getProducts() {
-  const url = "http://localhost:3000/api/getproducts";
-  const res = await fetch(url, {
-    cache: "no-store",
-  });
-  const products = await res.json();
+  // const url = "/api/getproducts";
+  // const res = await fetch(url, {
+  //   cache: "no-store",
+  // });
+  // const products = await res.json();
+  const res = await import("@/app/api/getproducts/route.js");
+  const products = await (await res.GET()).json();
 
   return products;
 }
