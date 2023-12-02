@@ -47,16 +47,16 @@ const Navbar = () => {
             <span className="ml-3 text-xl">HushString</span>
           </Link>
           <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
-            <Link className="mr-5 hover:text-gray-900" href="/ukulele">
+            <Link className="mr-5 hover:text-blue-700" href="/ukulele">
               Ukulele
             </Link>
-            <Link className="mr-5 hover:text-gray-900" href="/guitars">
+            <Link className="mr-5 hover:text-blue-700" href="/guitars">
               Guitar
             </Link>
-            <Link className="mr-5 hover:text-gray-900" href="/keyboards">
+            <Link className="mr-5 hover:text-blue-700" href="/keyboards">
               Keyboard/Piano
             </Link>
-            <Link className="mr-5 hover:text-gray-900" href="/drum-kits">
+            <Link className="mr-5 hover:text-blue-700" href="/drum-kits">
               Drum Kit
             </Link>
           </nav>
@@ -92,7 +92,7 @@ const Navbar = () => {
                   <li key={item}>
                     <div className="item flex my-5">
                       <div className="w-2/3 font-semibold">
-                        {cart[item].name}
+                        {cart[item].name} ({cart[item].varient})
                       </div>
                       <div className="w-1/3 flex items-center justify-center font-semibold text-lg">
                         <HiOutlineMinusCircle
@@ -109,7 +109,6 @@ const Navbar = () => {
                               item,
                               1,
                               item.price,
-                              item.size,
                               item.varient,
                               item.name
                             );

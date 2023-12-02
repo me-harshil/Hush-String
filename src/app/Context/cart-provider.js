@@ -28,12 +28,12 @@ export default function CartProvider({ children }) {
     setSubTotal(total);
   };
 
-  const addToCart = (itemCode, quantity, price, size, varient, name) => {
+  const addToCart = (itemCode, quantity, price, varient, name) => {
     let newCart = cart;
     if (itemCode in newCart) {
       newCart[itemCode].quantity += quantity;
     } else {
-      newCart[itemCode] = { quantity, price, size, varient, name };
+      newCart[itemCode] = { quantity, price, varient, name };
     }
     setCart(newCart);
     saveCart(newCart);
