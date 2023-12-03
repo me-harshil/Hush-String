@@ -2,6 +2,8 @@
 import React, { useState, useContext } from "react";
 import Image from "next/image";
 import { CartContext } from "@/app/Context/cart-provider";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ProductInfo = ({ product, variants }) => {
   const { addToCart, buyNow } = useContext(CartContext);
@@ -15,8 +17,28 @@ const ProductInfo = ({ product, variants }) => {
 
     if (pinsJson.includes(parseInt(pincode))) {
       setDelivery(true);
+      toast.success('Your Pincode is serviceable!', {
+        position: "bottom-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        })
     } else {
       setDelivery(false);
+      toast.error('Sorry, Pincode not serviceable!', {
+        position: "bottom-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
     }
   };
 
@@ -30,10 +52,21 @@ const ProductInfo = ({ product, variants }) => {
     let url = `http://localhost:3000/product/${variants[newColor].slug}`;
     window.location = url;
   };
-
   return (
     <>
       <section className="text-gray-600 body-font overflow-hidden">
+        <ToastContainer
+          position="bottom-center"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
         <div className="container px-5 py-16 mx-auto">
           <div className="lg:w-4/5 mx-auto flex flex-wrap">
             <Image
@@ -215,6 +248,16 @@ const ProductInfo = ({ product, variants }) => {
                       color,
                       product.title
                     );
+                    toast.success('Item added to cart successfully!', {
+                      position: "bottom-center",
+                      autoClose: 2000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: "light",
+                      });
                   }}
                   className="flex ml-4 text-white bg-blue-500 border-0 py-2 px-2 md:px-6 focus:outline-none hover:bg-blue-600 rounded"
                 >
