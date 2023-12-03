@@ -68,7 +68,7 @@ const Navbar = () => {
           </div>
           <div
             ref={ref}
-            className={`w-72 h-[100vh] sideCart absolute top-0 right-0 px-7 py-10 transform transition-transform ${
+            className={`w-72 h-[100vh] sideCart overflow-y-scroll absolute top-0 right-0 px-7 py-10 transform transition-transform ${
               Object.keys(cart).length !== 0
                 ? "translate-x-0"
                 : "translate-x-full"
@@ -92,7 +92,7 @@ const Navbar = () => {
                   <li key={item}>
                     <div className="item flex my-5">
                       <div className="w-2/3 font-semibold">
-                        {cart[item].name} ({cart[item].varient})
+                        {cart[item].name} ({cart[item].variant})
                       </div>
                       <div className="w-1/3 flex items-center justify-center font-semibold text-lg">
                         <HiOutlineMinusCircle
@@ -109,7 +109,7 @@ const Navbar = () => {
                               item,
                               1,
                               item.price,
-                              item.varient,
+                              item.variant,
                               item.name
                             );
                           }}

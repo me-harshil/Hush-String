@@ -1,9 +1,11 @@
 "use client";
 import { createContext, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export const CartContext = createContext();
 
 export default function CartProvider({ children }) {
+  const router = useRouter();
   const [cart, setCart] = useState({});
   const [subTotal, setSubTotal] = useState(0);
 
@@ -28,12 +30,12 @@ export default function CartProvider({ children }) {
     setSubTotal(total);
   };
 
-  const addToCart = (itemCode, quantity, price, varient, name) => {
+  const addToCart = (itemCode, quantity, price, variant, name) => {
     let newCart = cart;
     if (itemCode in newCart) {
       newCart[itemCode].quantity += quantity;
     } else {
-      newCart[itemCode] = { quantity, price, varient, name };
+      newCart[itemCode] = { quantity, price, variant, name };
     }
     setCart(newCart);
     saveCart(newCart);
@@ -57,6 +59,16 @@ export default function CartProvider({ children }) {
     saveCart(newCart);
   };
 
+  const buyNow = (itemCode, quantity, price, variant, name) => {
+    setCart({});
+    let newCart = {};
+    newCart[itemCode] = { quantity, price, variant, name };
+
+    setCart(newCart);
+    saveCart(newCart);
+    router.push("/checkout");
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -68,6 +80,7 @@ export default function CartProvider({ children }) {
         checkLocalStoreageOnReloadOrRevisit,
         subTotal,
         setSubTotal,
+        buyNow,
       }}
     >
       {children}

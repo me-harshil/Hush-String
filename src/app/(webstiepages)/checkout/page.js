@@ -126,7 +126,7 @@ const Checkout = () => {
             return (
               <li key={item}>
                 <div className="item flex my-5">
-                  <div className="font-semibold">{cart[item].name}</div>
+                  <div className="font-semibold">{cart[item].name} ({cart[item].variant})</div>
                   <div className="w-1/3 flex items-center justify-center font-semibold text-lg">
                     <HiOutlineMinusCircle
                       className="cursor-pointer text-blue-500"
@@ -143,7 +143,7 @@ const Checkout = () => {
                           1,
                           item.price,
                           item.size,
-                          item.varient,
+                          item.variant,
                           item.name
                         );
                       }}

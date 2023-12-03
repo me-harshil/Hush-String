@@ -4,7 +4,7 @@ import Image from "next/image";
 import { CartContext } from "@/app/Context/cart-provider";
 
 const ProductInfo = ({ product, variants }) => {
-  const { addToCart } = useContext(CartContext);
+  const { addToCart, buyNow } = useContext(CartContext);
 
   const [pincode, setPincode] = useState("");
   const [delivery, setDelivery] = useState(null);
@@ -30,6 +30,7 @@ const ProductInfo = ({ product, variants }) => {
     let url = `http://localhost:3000/product/${variants[newColor].slug}`;
     window.location = url;
   };
+
   return (
     <>
       <section className="text-gray-600 body-font overflow-hidden">
@@ -190,13 +191,30 @@ const ProductInfo = ({ product, variants }) => {
                 <span className="title-font font-medium text-2xl text-gray-900">
                   ₹{product.price}
                 </span>
-                <button className="flex ml-8 text-white bg-blue-500 border-0 py-2 px-2 md:px-6 focus:outline-none hover:bg-blue-600 rounded">
-                  Buy Now
-                </button>
-                {/* addToCart(itemCode, quantity, price, varient, name)  */}
                 <button
                   onClick={() => {
-                    addToCart(variants[color].slug, 1, product.price, color, product.title);
+                    buyNow(
+                      variants[color].slug,
+                      1,
+                      product.price,
+                      color,
+                      product.title
+                    );
+                  }}
+                  className="flex ml-8 text-white bg-blue-500 border-0 py-2 px-2 md:px-6 focus:outline-none hover:bg-blue-600 rounded"
+                >
+                  Buy Now
+                </button>
+                {/* addToCart(itemCode, quantity, price, variant, name)  */}
+                <button
+                  onClick={() => {
+                    addToCart(
+                      variants[color].slug,
+                      1,
+                      product.price,
+                      color,
+                      product.title
+                    );
                   }}
                   className="flex ml-4 text-white bg-blue-500 border-0 py-2 px-2 md:px-6 focus:outline-none hover:bg-blue-600 rounded"
                 >
