@@ -17,7 +17,7 @@ const SlugProduct = async ({ params }) => {
     colorSlug[item.color] = { slug: item.slug };
   }
 
-  return <ProductInfo product={product} variants={colorSlug}/>;
+  return <ProductInfo product={product} variants={colorSlug} />;
 };
 
 export default SlugProduct;

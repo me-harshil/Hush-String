@@ -5,15 +5,6 @@ import Product from "@/app/models/Product";
 import connectDB from "@/app/middleware/connectDB";
 
 async function getProducts() {
-  // const url = "/api/getproducts";
-  // const res = await fetch(url, {
-  //   cache: "no-store",
-  // });
-  // const products = await res.json();
-  // const res = await import("@/app/api/getproducts/route.js");
-  // const products = await (await res.GET()).json();
-
-  // return products;
   const mongoDB = await connectDB();
   console.log(mongoDB);
   let products = await Product.find({ category: "ukulele" }).lean();
@@ -44,6 +35,12 @@ const Ukulele = async () => {
     <div>
       <section className="text-gray-600 body-font">
         <div className="container px-5 py-24 mx-auto">
+        {Object.keys(ukulele).length === 0 && (
+            <p className="text-center">
+              Sorry all ukuleles are currently out of stock. New stock coming
+              soon. Stay Tuned!
+            </p>
+          )}
           <div className="flex flex-wrap -m-4">
             {Object.keys(ukulele).map((product) => {
               return (
@@ -72,18 +69,6 @@ const Ukulele = async () => {
                       </h2>
                       <p className="mt-1">₹{ukulele[product].price}</p>
                     </div>
-                    {/* Brown color not available in tailwindcss */}
-                    {/* <div className="mt-2 ml-1">
-                      {ukulele[product].color.map((ukuleleColor) => {
-                        return (
-                          <span key={ukulele[product]._id}>
-                            <button
-                              class={`border-2 border-gray-300 ml-1 bg-${ukuleleColor}-500 rounded-full w-6 h-6 focus:outline-none`}
-                            ></button>
-                          </span>
-                        );
-                      })}
-                    </div> */}
                   </Link>
                 </div>
               );
