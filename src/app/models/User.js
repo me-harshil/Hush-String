@@ -9,5 +9,7 @@ const UserSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-mongoose.models = {}; // to prevent OverwriteModelError
-export default mongoose.model("User", UserSchema);
+// mongoose.models = {}; // to prevent OverwriteModelError
+// export default mongoose.model("User", UserSchema);
+
+export default mongoose.models.User || mongoose.model("User", UserSchema); // to prevent OverwriteModelError

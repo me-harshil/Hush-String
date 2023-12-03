@@ -10,7 +10,10 @@ const SlugProduct = async ({ params }) => {
   let product = JSON.parse(
     JSON.stringify(await Product.findOne({ slug: slug }).lean())
   );
-  let variants = await Product.find({ title: product.title }).lean();
+  let variants = await Product.find({
+    title: product.title,
+    category: product.category,
+  }).lean();
 
   let colorSlug = {};
   for (let item of variants) {
