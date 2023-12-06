@@ -21,7 +21,6 @@ const Navbar = () => {
     subTotal,
     setSubTotal,
     user,
-    key,
     logout,
   } = useContext(CartContext);
   const ref = useRef();
@@ -78,7 +77,7 @@ const Navbar = () => {
               </Link>
             </nav>
             <div className="flex cart absolute right-0 mx-4 cursor-pointer items-center">
-              <a
+              <span
                 onMouseOver={() => setDropdown(true)}
                 onMouseLeave={() => setDropdown(false)}
               >
@@ -104,7 +103,7 @@ const Navbar = () => {
                     </ul>
                   </div>
                 )}
-              </a>
+              </span>
               {user.value && (
                 <MdAccountCircle
                   onMouseOver={() => setDropdown(true)}

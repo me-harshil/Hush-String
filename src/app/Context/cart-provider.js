@@ -11,7 +11,6 @@ export default function CartProvider({ children }) {
   const [cart, setCart] = useState({});
   const [subTotal, setSubTotal] = useState(0);
   const [user, setUser] = useState({ value: null });
-  const [key, setKey] = useState(0);
 
   const checkLocalStoreageOnReloadOrRevisit = () => {
     try {
@@ -121,7 +120,6 @@ export default function CartProvider({ children }) {
           setSubTotal,
           buyNow,
           user,
-          key,
           logout,
         }}
       >

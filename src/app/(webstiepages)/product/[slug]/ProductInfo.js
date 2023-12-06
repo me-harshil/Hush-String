@@ -12,12 +12,12 @@ const ProductInfo = ({ product, variants }) => {
   const [delivery, setDelivery] = useState(null);
 
   const checkDelivery = async () => {
-    let pins = await fetch("http://localhost:3000/api/pincode");
+    let pins = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincode`);
     let pinsJson = await pins.json();
 
     if (pinsJson.includes(parseInt(pincode))) {
       setDelivery(true);
-      toast.success('Your Pincode is serviceable!', {
+      toast.success("Your Pincode is serviceable!", {
         position: "bottom-center",
         autoClose: 3000,
         hideProgressBar: false,
@@ -26,10 +26,10 @@ const ProductInfo = ({ product, variants }) => {
         draggable: true,
         progress: undefined,
         theme: "light",
-        })
+      });
     } else {
       setDelivery(false);
-      toast.error('Sorry, Pincode not serviceable!', {
+      toast.error("Sorry, Pincode not serviceable!", {
         position: "bottom-center",
         autoClose: 3000,
         hideProgressBar: false,
@@ -38,7 +38,7 @@ const ProductInfo = ({ product, variants }) => {
         draggable: true,
         progress: undefined,
         theme: "light",
-        });
+      });
     }
   };
 
@@ -248,7 +248,7 @@ const ProductInfo = ({ product, variants }) => {
                       color,
                       product.title
                     );
-                    toast.success('Item added to cart successfully!', {
+                    toast.success("Item added to cart successfully!", {
                       position: "bottom-center",
                       autoClose: 2000,
                       hideProgressBar: false,
@@ -257,7 +257,7 @@ const ProductInfo = ({ product, variants }) => {
                       draggable: true,
                       progress: undefined,
                       theme: "light",
-                      });
+                    });
                   }}
                   className="flex ml-4 text-white bg-blue-500 border-0 py-2 px-2 md:px-6 focus:outline-none hover:bg-blue-600 rounded"
                 >
