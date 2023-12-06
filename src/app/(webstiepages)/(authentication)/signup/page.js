@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -14,6 +14,12 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isChecked, setIsChecked] = useState(false);
 
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      router.push("/");
+    }
+    //eslint-disable-next-line
+  }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {

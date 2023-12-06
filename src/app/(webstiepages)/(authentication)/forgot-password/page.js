@@ -1,8 +1,17 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
-const forgotPassword = () => {
+const ForgotPassword = () => {
+  const router = useRouter();
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      router.push("/");
+    }
+    //eslint-disable-next-line
+  }, []);
   return (
     <div>
       <section className="bg-gray-50 ">
@@ -112,4 +121,4 @@ const forgotPassword = () => {
   );
 };
 
-export default forgotPassword;
+export default ForgotPassword;
