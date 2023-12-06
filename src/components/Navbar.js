@@ -85,12 +85,12 @@ const Navbar = () => {
                 {dropdown && (
                   <div className="absolute right-9 bg-white shadow-xl top-6 rounded px-5 py-2 w-32">
                     <ul>
-                      <Link href="">
+                      <Link href="myaccount">
                         <li className="py-1 text-sm hover:text-blue-700 font-bold">
                           My Account
                         </li>
                       </Link>
-                      <Link href="">
+                      <Link href="orders">
                         <li className="py-1 text-sm hover:text-blue-700 font-bold">
                           Orders
                         </li>
