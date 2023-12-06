@@ -1,6 +1,7 @@
 "use client";
-import React, { useRef, useContext, useEffect } from "react";
+import React, { useRef, useContext, useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { GrFormClose } from "react-icons/gr";
 import { HiOutlinePlusCircle, HiOutlineMinusCircle } from "react-icons/hi";
@@ -18,13 +19,18 @@ const Navbar = () => {
     checkLocalStoreageOnReloadOrRevisit,
     subTotal,
     setSubTotal,
+    user,
+    key,
+    logout,
   } = useContext(CartContext);
   const ref = useRef();
+  const pathname = usePathname();
+  const [dropdown, setDropdown] = useState(false);
 
   useEffect(() => {
     checkLocalStoreageOnReloadOrRevisit();
     // eslint-disable-next-line
-  }, []);
+  }, [pathname]);
 
   const toggleCart = () => {
     if (ref.current.classList.contains("translate-x-full")) {
@@ -60,12 +66,45 @@ const Navbar = () => {
               Drum Kit
             </Link>
           </nav>
-          <div className="flex cart absolute right-0 mx-4 cursor-pointer">
-            <Link href={"/login"}>
-              <MdAccountCircle className="text-2xl mx-2" />
-            </Link>
+          <div className="flex cart absolute right-0 mx-4 cursor-pointer items-center">
+            <a
+              onMouseOver={() => setDropdown(true)}
+              onMouseLeave={() => setDropdown(false)}
+            >
+              {dropdown && (
+                <div className="absolute right-9 bg-blue-300 top-6 rounded px-5 py-2 w-32">
+                  <ul>
+                    <Link href=""><li className="py-1 text-sm hover:text-blue-700 font-bold">
+                        My Account
+                      </li>
+                    </Link>
+                    <Link href="">
+                      <li className="py-1 text-sm hover:text-blue-700 font-bold">
+                        Orders
+                      </li>
+                    </Link>
+                   <li onClick={logout} className="py-1 text-sm hover:text-blue-700 font-bold">Logout</li>
+                  </ul>
+                </div>
+              )}
+            </a>
+            {user.value && (
+              <MdAccountCircle
+                onMouseOver={() => setDropdown(true)}
+                onMouseLeave={() => setDropdown(false)}
+                className="text-2xl mx-2"
+              />
+            )}
+            {!user.value && (
+              <Link href={"/login"}>
+                <button className="flex mr-2 text-white bg-blue-500 border-0 py-2 px-2 md:px-4 focus:outline-none hover:bg-blue-600 rounded">
+                  Login
+                </button>
+              </Link>
+            )}
             <AiOutlineShoppingCart className="text-2xl" onClick={toggleCart} />
           </div>
+
           <div
             ref={ref}
             className={`w-72 h-[100vh] sideCart overflow-y-scroll absolute top-0 right-0 px-7 py-10 transform transition-transform ${

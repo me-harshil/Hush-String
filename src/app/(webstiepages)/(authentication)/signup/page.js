@@ -25,23 +25,26 @@ const Signup = () => {
         body: JSON.stringify({ name, email, password }),
       });
       const data = await res.json();
-      console.log(data);
 
       setName("");
       setEmail("");
       setPassword("");
       setConfirmPassword("");
-      // router.push("/");
-      toast.success("Your account created successfully!", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      if (data.message) {
+        toast.success("Your account created successfully!", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setTimeout(() => {
+          router.push("/");
+        }, 3000);
+      }
     } catch (err) {
       console.log(err);
     }
@@ -93,7 +96,7 @@ const Signup = () => {
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl ">
                 Create and account
               </h1>
-              <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
+              <form className="space-y-4 md:space-y-6">
                 <div>
                   <label
                     htmlFor="name"
@@ -207,6 +210,7 @@ const Signup = () => {
                     password.length > 16 ||
                     isChecked === false
                   }
+                  onClick={handleSubmit}
                 >
                   Create an account
                 </button>

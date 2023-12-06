@@ -1,6 +1,8 @@
 "use client";
 import { createContext, useState } from "react";
 import { useRouter } from "next/navigation";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const CartContext = createContext();
 
@@ -8,6 +10,8 @@ export default function CartProvider({ children }) {
   const router = useRouter();
   const [cart, setCart] = useState({});
   const [subTotal, setSubTotal] = useState(0);
+  const [user, setUser] = useState({ value: null });
+  const [key, setKey] = useState(0);
 
   const checkLocalStoreageOnReloadOrRevisit = () => {
     try {
@@ -19,6 +23,28 @@ export default function CartProvider({ children }) {
       console.error(error);
       localStorage.clear();
     }
+    const token = localStorage.getItem("token");
+    if (token) {
+      setUser({ value: token });
+    }
+    setKey(Math.random());
+  };
+
+  const logout = () => {
+    toast.success("Logout Successfully!!", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
+    localStorage.clear();
+    setUser({ value: null });
+    router.push("/");
   };
 
   const saveCart = (cart) => {
@@ -70,20 +96,37 @@ export default function CartProvider({ children }) {
   };
 
   return (
-    <CartContext.Provider
-      value={{
-        removeFromCart,
-        clearCart,
-        addToCart,
-        saveCart,
-        cart,
-        checkLocalStoreageOnReloadOrRevisit,
-        subTotal,
-        setSubTotal,
-        buyNow,
-      }}
-    >
-      {children}
-    </CartContext.Provider>
+    <>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      <CartContext.Provider
+        value={{
+          removeFromCart,
+          clearCart,
+          addToCart,
+          saveCart,
+          cart,
+          checkLocalStoreageOnReloadOrRevisit,
+          subTotal,
+          setSubTotal,
+          buyNow,
+          user,
+          key,
+          logout,
+        }}
+      >
+        {children}
+      </CartContext.Provider>
+    </>
   );
 }
