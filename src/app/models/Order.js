@@ -2,19 +2,15 @@ const mongoose = require("mongoose");
 
 const OrderSchema = new mongoose.Schema(
   {
-    userId: { type: String, required: true },
-    products: [
-      {
-        productId: { type: String },
-        quantity: { type: Number, default: 1 },
-      },
-    ],
+    email: { type: String, required: true },
+    orderId: { type: String, required: true },
+    paymentInfo: { type: Object, default: "" },
+    products: { type: Object, required: true },
     amount: { type: Number, required: true },
     address: { type: Object, required: true },
-    status: { type: String, default: "pending" },
+    status: { type: String, default: "initiated" },
   },
   { timestamps: true }
 );
 
-mongoose.models = {}; // to prevent OverwriteModelError
-export default mongoose.model("Order", OrderSchema);
+export default mongoose.model.Order || mongoose.model("Order", OrderSchema);

@@ -26,7 +26,7 @@ export default function CartProvider({ children }) {
     if (token) {
       setUser({ value: token });
     }
-    setKey(Math.random());
+   
   };
 
   const logout = () => {
