@@ -10,7 +10,7 @@ const MyAccount = () => {
     }
     // eslint-disable-next-line
   }, []);
-  return <div>MyAccount</div>;
+  return <div className="min-h-screen">MyAccount</div>;
 };
 
 export default MyAccount;

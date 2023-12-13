@@ -7,18 +7,18 @@ export async function POST(request) {
   const data = await request.json();
 
   if (data.STATUS === "TXN_SUCCESS") {
-    await Order.findOneAndUpdate(
+    let order = await Order.findOneAndUpdate(
       { orderId: data.ORDERID },
       { status: "Paid", paymentInfo: JSON.stringify(data) }
     );
   } else if (data.STATUS === "PENDING") {
-    await Order.findOneAndUpdate(
+    let order = await Order.findOneAndUpdate(
       { orderId: data.ORDERID },
       { status: "Pending", paymentInfo: JSON.stringify(data) }
     );
   }
 
-  Response.redirect("/order", 200);
+  Response.redirect("/order?id=" + order._id, 200);
 
   return Response.json(data);
 }
