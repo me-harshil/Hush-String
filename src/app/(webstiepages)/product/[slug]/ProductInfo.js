@@ -15,7 +15,7 @@ const ProductInfo = ({ product, variants }) => {
     let pins = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincode`);
     let pinsJson = await pins.json();
 
-    if (pinsJson.includes(parseInt(pincode))) {
+    if (Object.keys(pinsJson).includes(pincode)) {
       setDelivery(true);
       toast.success("Your Pincode is serviceable!", {
         position: "bottom-center",

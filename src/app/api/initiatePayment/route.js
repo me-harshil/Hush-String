@@ -2,11 +2,28 @@ const https = require("https");
 const PaytmChecksum = require("paytmchecksum");
 import Order from "@/app/models/Order";
 import connectDB from "@/app/middleware/connectDB";
+import Product from "@/app/models/Product";
 
 export async function POST(request) {
   const mongoDB = await connectDB();
   console.log(mongoDB);
   const data = await request.json();
+
+  // Check if cart is tampered or not
+  let product,
+    sumTotal = 0;
+  let cart = data.cart;
+  for (let item in cart) {
+    console.log(item);
+    sumTotal += cart[item].price * cart[item].quantity;
+    product = await Product.findOne({ slug: item }).lean();
+    if (!product || product.price !== cart[item].price) {
+      return Response.json({ success: false, message: "Cart is tampered" });
+    }
+  }
+  if (sumTotal !== data.subTotal) {
+    return Response.json({ success: false, message: "Cart is tampered" });
+  }
 
   // Create Order Object
   const order = new Order({
@@ -76,7 +93,9 @@ export async function POST(request) {
 
   //       post_res.on("end", function () {
   //         console.log("Response: ", response);
-  //         resolve(JSON.parse(response).body);
+  //        let response = JSON.parse(response).body;
+  //          response.success = true;
+  //         resolve(response);
   //       });
   //     });
 
@@ -85,7 +104,7 @@ export async function POST(request) {
   //   });
   // };
   // const response = await requestAsync();
-  // return Response.json(response);
+  // return Response.json({ success: true, response });
 
   return Response.json({ success: true });
 }

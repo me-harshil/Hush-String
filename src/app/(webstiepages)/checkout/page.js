@@ -4,6 +4,8 @@ import { CartContext } from "@/app/Context/cart-provider";
 import Link from "next/link";
 import { HiOutlinePlusCircle, HiOutlineMinusCircle } from "react-icons/hi";
 import { BsFillBagCheckFill } from "react-icons/bs";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Checkout = () => {
   // TODO: Add payment gateway and integrate with backend
@@ -19,7 +21,7 @@ const Checkout = () => {
   const [state, setState] = useState("");
   const [pincode, setPincode] = useState("");
 
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     const { name, value } = e.target;
     switch (name) {
       case "name":
@@ -36,6 +38,17 @@ const Checkout = () => {
         break;
       case "pincode":
         setPincode(value);
+        if (value.length === 6) {
+          let pins = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincode`);
+          let pinsJson = await pins.json();
+          if (pinsJson[value]) {
+            setCity(pinsJson[value][0]);
+            setState(pinsJson[value][1]);
+          }
+        } else {
+          setCity("");
+          setState("");
+        }
         break;
       default:
         break;
@@ -64,41 +77,74 @@ const Checkout = () => {
         }),
       }
     );
-    console.log(data.json());
-    // let txnRes = await data.json();
-    // let txnToken = txnRes.txnToken;
-    // console.log(txnToken);
-    // var config = {
-    //   root: "",
-    //   flow: "DEFAULT",
-    //   data: {
-    //     orderId: orderId,
-    //     token: txnToken,
-    //     tokenType: "TXN_TOKEN",
-    //     amount: subTotal,
-    //   },
-    //   handler: {
-    //     notifyMerchant: function (eventName, data) {
-    //       console.log("notifyMerchant handler function called");
-    //       console.log("eventName => ", eventName);
-    //       console.log("data => ", data);
-    //     },
-    //   },
-    // };
-
-    // // initialze configuration using init method
-    // window.Paytm.CheckoutJS.init(config)
-    //   .then(function onSuccess() {
-    //     // after successfully updating configuration, invoke JS Checkout
-    //     window.Paytm.CheckoutJS.invoke();
-    //   })
-    //   .catch(function onError(error) {
-    //     console.log("error => ", error);
-    //   });
+    let txnRes = await data.json();
+    if (txnRes.success) {
+      toast.success("Payment successfully initiate", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      // let txnToken = txnRes.txnToken;
+      // console.log(txnToken);
+      // var config = {
+      //   root: "",
+      //   flow: "DEFAULT",
+      //   data: {
+      //     orderId: orderId,
+      //     token: txnToken,
+      //     tokenType: "TXN_TOKEN",
+      //     amount: subTotal,
+      //   },
+      //   handler: {
+      //     notifyMerchant: function (eventName, data) {
+      //       console.log("notifyMerchant handler function called");
+      //       console.log("eventName => ", eventName);
+      //       console.log("data => ", data);
+      //     },
+      //   },
+      // };
+      // // initialze configuration using init method
+      // window.Paytm.CheckoutJS.init(config)
+      //   .then(function onSuccess() {
+      //     // after successfully updating configuration, invoke JS Checkout
+      //     window.Paytm.CheckoutJS.invoke();
+      //   })
+      //   .catch(function onError(error) {
+      //     console.log("error => ", error);
+      //   });
+    } else {
+      toast.error(txnRes.message, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
 
   return (
     <div className="container m-auto px-6 md:px-24">
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <h1 className="font-bold text-4xl my-8 text-center">Checkout</h1>
       <h2 className="font-semibold text-xl">1. Delivery Details</h2>
       <div className="mx-auto flex my-2">
@@ -272,7 +318,9 @@ const Checkout = () => {
               address === "" ||
               phone === "" ||
               pincode === "" ||
-              Object.keys(cart).length === 0
+              Object.keys(cart).length === 0 ||
+              city === "" ||
+              state === ""
             }
             className="disabled:bg-blue-400 flex mr-2 mt-8 text-white bg-blue-600 border-0 py-2 px-2 focus:outline-none hover:bg-blue-700 rounded text-sm"
             onClick={invokePaymentPage}
