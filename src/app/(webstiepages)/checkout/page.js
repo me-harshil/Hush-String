@@ -14,7 +14,7 @@ const Checkout = () => {
     useContext(CartContext);
 
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(localStorage.getItem("email"));
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
   const [city, setCity] = useState("");
@@ -27,9 +27,7 @@ const Checkout = () => {
       case "name":
         setName(value);
         break;
-      case "email":
-        setEmail(value);
-        break;
+
       case "address":
         setAddress(value);
         break;
@@ -118,6 +116,7 @@ const Checkout = () => {
       //     console.log("error => ", error);
       //   });
     } else {
+      clearCart();
       toast.error(txnRes.message, {
         position: "top-center",
         autoClose: 3000,
@@ -132,7 +131,7 @@ const Checkout = () => {
   };
 
   return (
-    <div className="container m-auto px-6 md:px-24">
+    <div className="container m-auto px-6 md:px-24 min-h-screen">
       <ToastContainer
         position="top-center"
         autoClose={3000}
@@ -172,7 +171,7 @@ const Checkout = () => {
               type="email"
               id="email"
               value={email}
-              onChange={handleChange}
+              readOnly
               name="email"
               className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             />

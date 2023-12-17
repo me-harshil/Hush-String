@@ -1,5 +1,7 @@
 import Order from "@/app/models/Order";
 import connectDB from "@/app/middleware/connectDB";
+import Product from "@/app/models/Product";
+import { redirect } from "next/navigation";
 
 export async function POST(request) {
   const mongoDB = await connectDB();
@@ -11,6 +13,15 @@ export async function POST(request) {
       { orderId: data.ORDERID },
       { status: "Paid", paymentInfo: JSON.stringify(data) }
     );
+
+    // Update product quantity
+    let products = order.products;
+    for (let slug in products) {
+      await Product.findOneAndUpdate(
+        { slug },
+        { $inc: { availableQuantity: -products[slug].quantity } }
+      );
+    }
   } else if (data.STATUS === "PENDING") {
     order = await Order.findOneAndUpdate(
       { orderId: data.ORDERID },
@@ -18,7 +29,7 @@ export async function POST(request) {
     );
   }
 
-  Response.redirect("/order?id=" + order._id, 200);
-
-  return Response.json(data);
+console.log(`/order?id=${order._id}`);
+//ERROR: not redirecting to order page
+  redirect(`/order?id=${order._id}`);
 }

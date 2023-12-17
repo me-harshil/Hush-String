@@ -14,9 +14,15 @@ export async function POST(request) {
     sumTotal = 0;
   let cart = data.cart;
   for (let item in cart) {
-    console.log(item);
     sumTotal += cart[item].price * cart[item].quantity;
     product = await Product.findOne({ slug: item }).lean();
+    if (cart[item].quantity > product.availableQuantity) {
+      return Response.json({
+        success: false,
+        message:
+          "Some products are not available in the quantity you requested. Please try again.",
+      });
+    }
     if (!product || product.price !== cart[item].price) {
       return Response.json({ success: false, message: "Cart is tampered" });
     }
@@ -105,6 +111,19 @@ export async function POST(request) {
   // };
   // const response = await requestAsync();
   // return Response.json({ success: true, response });
+
+  // This is only for testing purpose and will be removed in production
+  let paytmCallback = await fetch(
+    `${process.env.NEXT_PUBLIC_HOST}/api/paytmCallback`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ORDERID: data.orderId, STATUS: "TXN_SUCCESS" }),
+    }
+  );
+
 
   return Response.json({ success: true });
 }

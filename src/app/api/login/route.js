@@ -20,10 +20,11 @@ export async function POST(request) {
           name: user.name,
           email: user.email,
         },
-        process.env.JWT_SECRET_KEY,{ expiresIn: "4d"}
+        process.env.JWT_SECRET_KEY,
+        { expiresIn: "4d" }
       );
 
-      return Response.json({ success: true, token });
+      return Response.json({ success: true, token, email: user.email });
     }
     return Response.json({ error: "Invalid Credentials!" });
   } catch (error) {
