@@ -31,6 +31,15 @@ const OrderComponent = ({ order }) => {
                   confirmation email with tracking details when your order
                   ships.
                 </p>
+                <p className="leading-relaxed mb-4">
+                  Order Placed On:{" "}
+                  {new Date(order.createdAt).toLocaleDateString("en-IN", {
+                    weekday: "long",
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </p>
                 <div className="flex mb-4">
                   <span className="flex-grow border-b-2 text-center py-2 text-lg px-1">
                     Items

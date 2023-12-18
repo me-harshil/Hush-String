@@ -59,7 +59,7 @@ const Navbar = () => {
         onMouseLeave={() => setDropdown(false)}
       >
         {dropdown && (
-          <div className="absolute right-9 bg-white shadow-xl top-12 rounded px-5 py-2 w-32 z-40">
+          <div className="fixed right-9 bg-white shadow-xl top-12 rounded px-5 py-2 w-32 z-40">
             <ul>
               <Link href="myaccount">
                 <li className="py-1 text-sm hover:text-blue-700 font-bold">
@@ -68,7 +68,7 @@ const Navbar = () => {
               </Link>
               <Link href="orders">
                 <li className="py-1 text-sm hover:text-blue-700 font-bold">
-                  Orders
+                  My Orders
                 </li>
               </Link>
               <li

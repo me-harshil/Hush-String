@@ -11,17 +11,13 @@ async function getProducts() {
   let drumkit = {};
   for (let item of products) {
     if (item.title in drumkit) {
-      if (
-        !drumkit[item.title].color.includes(item.color) &&
-        item.availableQuantity > 0
-      ) {
+      if (!drumkit[item.title].color.includes(item.color)) {
         drumkit[item.title].color.push(item.color);
       }
     } else {
       drumkit[item.title] = JSON.parse(JSON.stringify(item));
-      if (drumkit[item.title].availableQuantity > 0) {
-        drumkit[item.title].color = [item.color];
-      }
+
+      drumkit[item.title].color = [item.color];
     }
   }
 

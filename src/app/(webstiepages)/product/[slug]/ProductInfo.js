@@ -224,7 +224,7 @@ const ProductInfo = ({ product, variants }) => {
               </div>
               <div className="flex">
                 <span className="title-font font-medium text-2xl text-gray-900">
-                  ₹{product.price}
+                  {product.availableQuantity === 0 ? "Out of Stock!" : ` ₹${product.price}`}
                 </span>
                 <button
                   onClick={() => {
@@ -236,7 +236,8 @@ const ProductInfo = ({ product, variants }) => {
                       product.title
                     );
                   }}
-                  className="flex ml-8 text-white bg-blue-500 border-0 py-2 px-2 md:px-6 focus:outline-none hover:bg-blue-600 rounded"
+                  className="flex ml-8 text-white bg-blue-500 border-0 py-2 px-2 md:px-6 focus:outline-none hover:bg-blue-600 rounded disabled:bg-blue-300"
+                  disabled={product.availableQuantity === 0}
                 >
                   Buy Now
                 </button>
@@ -261,7 +262,8 @@ const ProductInfo = ({ product, variants }) => {
                       theme: "light",
                     });
                   }}
-                  className="flex ml-4 text-white bg-blue-500 border-0 py-2 px-2 md:px-6 focus:outline-none hover:bg-blue-600 rounded"
+                  className="flex ml-4 text-white bg-blue-500 border-0 py-2 px-2 md:px-6 focus:outline-none hover:bg-blue-600 rounded disabled:bg-blue-300"
+                  disabled={product.availableQuantity === 0}
                 >
                   Add to Cart
                 </button>

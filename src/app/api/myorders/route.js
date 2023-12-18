@@ -8,7 +8,9 @@ export async function POST(request) {
   const mongoDB = await connectDB();
   console.log(mongoDB);
   let orders = JSON.parse(
-    JSON.stringify(await Order.find({ email: verify.email }).lean())
+    JSON.stringify(
+      await Order.find({ email: verify.email, status: "Paid" }).lean()
+    )
   );
 
   return Response.json(orders);

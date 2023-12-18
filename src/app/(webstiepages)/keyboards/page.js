@@ -11,17 +11,13 @@ async function getProducts() {
   let keyboard = {};
   for (let item of products) {
     if (item.title in keyboard) {
-      if (
-        !keyboard[item.title].color.includes(item.color) &&
-        item.availableQuantity > 0
-      ) {
+      if (!keyboard[item.title].color.includes(item.color)) {
         keyboard[item.title].color.push(item.color);
       }
     } else {
       keyboard[item.title] = JSON.parse(JSON.stringify(item));
-      if (keyboard[item.title].availableQuantity > 0) {
-        keyboard[item.title].color = [item.color];
-      }
+
+      keyboard[item.title].color = [item.color];
     }
   }
 

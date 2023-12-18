@@ -11,17 +11,13 @@ async function getProducts() {
   let ukulele = {};
   for (let item of products) {
     if (item.title in ukulele) {
-      if (
-        !ukulele[item.title].color.includes(item.color) &&
-        item.availableQuantity > 0
-      ) {
+      if (!ukulele[item.title].color.includes(item.color)) {
         ukulele[item.title].color.push(item.color);
       }
     } else {
       ukulele[item.title] = JSON.parse(JSON.stringify(item));
-      if (ukulele[item.title].availableQuantity > 0) {
-        ukulele[item.title].color = [item.color];
-      }
+
+      ukulele[item.title].color = [item.color];
     }
   }
 
@@ -35,7 +31,7 @@ const Ukulele = async () => {
     <div>
       <section className="text-gray-600 body-font">
         <div className="container px-5 py-24 mx-auto">
-        {Object.keys(ukulele).length === 0 && (
+          {Object.keys(ukulele).length === 0 && (
             <p className="text-center">
               Sorry all ukuleles are currently out of stock. New stock coming
               soon. Stay Tuned!

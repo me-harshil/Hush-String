@@ -11,17 +11,13 @@ async function getProducts() {
   let guitar = {};
   for (let item of products) {
     if (item.title in guitar) {
-      if (
-        !guitar[item.title].color.includes(item.color) &&
-        item.availableQuantity > 0
-      ) {
+      if (!guitar[item.title].color.includes(item.color)) {
         guitar[item.title].color.push(item.color);
       }
     } else {
       guitar[item.title] = JSON.parse(JSON.stringify(item));
-      if (guitar[item.title].availableQuantity > 0) {
-        guitar[item.title].color = [item.color];
-      }
+
+      guitar[item.title].color = [item.color];
     }
   }
 

@@ -41,7 +41,7 @@ const Orders = () => {
                 #Order Id
               </th>
               <th scope="col" className="px-6 py-3">
-                Email
+                Date
               </th>
               <th scope="col" className="px-6 py-3">
                 Amount
@@ -61,7 +61,12 @@ const Orders = () => {
                   >
                     #{item.orderId}
                   </th>
-                  <td className="px-6 py-4">{item.email}</td>
+                  <td className="px-6 py-4">  {new Date(item.createdAt).toLocaleDateString("en-IN", {
+                    weekday: "long",
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}</td>
                   <td className="px-6 py-4">₹{item.amount}</td>
 
                   <td className="px-6 py-4">

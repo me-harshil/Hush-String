@@ -7,6 +7,10 @@ export async function POST(request) {
   const mongoDB = await connectDB();
   console.log(mongoDB);
   const data = await request.json();
+
+  //TODO: verify paytm checksum
+
+
   let order;
   if (data.STATUS === "TXN_SUCCESS") {
     order = await Order.findOneAndUpdate(
