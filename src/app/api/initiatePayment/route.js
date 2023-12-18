@@ -9,6 +9,10 @@ export async function POST(request) {
   console.log(mongoDB);
   const data = await request.json();
 
+  if (data.subTotal === 0 || data.cart.length === 0) {
+    return Response.json({ success: false, message: "Cart is empty" });
+  }
+
   // Check if cart is tampered or not
   let product,
     sumTotal = 0;
@@ -123,7 +127,6 @@ export async function POST(request) {
       body: JSON.stringify({ ORDERID: data.orderId, STATUS: "TXN_SUCCESS" }),
     }
   );
-
 
   return Response.json({ success: true });
 }

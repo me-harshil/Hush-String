@@ -1,17 +1,31 @@
 "use client";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { CartContext } from "@/app/Context/cart-provider";
 import Link from "next/link";
 import { HiOutlinePlusCircle, HiOutlineMinusCircle } from "react-icons/hi";
 import { BsFillBagCheckFill } from "react-icons/bs";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from "next/navigation";
 
 const Checkout = () => {
   // TODO: Add payment gateway and integrate with backend
-
+  const router = useRouter();
   const { cart, subTotal, clearCart, addToCart, removeFromCart } =
     useContext(CartContext);
+
+  useEffect(() => {
+    if (
+      localStorage.getItem("email") === null ||
+      localStorage.getItem("token") === null
+    ) {
+      router.push("/login");
+    }
+    if (Object.keys(cart).length === 0) {
+      router.push("/");
+    }
+    //eslint-disable-next-line
+  }, []);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState(localStorage.getItem("email"));
@@ -54,6 +68,23 @@ const Checkout = () => {
   };
 
   const invokePaymentPage = async () => {
+    // Check if phone number is valid
+    setPhone(parseInt(phone));
+    let phoneRegex = /^[0-9]\d{9}$/;
+    if (!phoneRegex.test(phone)) {
+      toast.error("Phone number is invalid", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      return;
+    }
+
     let orderId = Math.floor(Math.random() * Date.now());
     let data = await fetch(
       `${process.env.NEXT_PUBLIC_HOST}/api/initiatePayment`,
@@ -67,7 +98,6 @@ const Checkout = () => {
           cart,
           subTotal,
           orderId,
-          subTotal,
           name,
           address,
           pincode,
@@ -206,6 +236,8 @@ const Checkout = () => {
               name="phone"
               value={phone}
               onChange={handleChange}
+              maxLength="10"
+              placeholder="Enter 10 digit phone number"
               className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             />
           </div>
@@ -319,7 +351,9 @@ const Checkout = () => {
               pincode === "" ||
               Object.keys(cart).length === 0 ||
               city === "" ||
-              state === ""
+              state === "" ||
+              subTotal === 0 ||
+              phone.length !== 10
             }
             className="disabled:bg-blue-400 flex mr-2 mt-8 text-white bg-blue-600 border-0 py-2 px-2 focus:outline-none hover:bg-blue-700 rounded text-sm"
             onClick={invokePaymentPage}

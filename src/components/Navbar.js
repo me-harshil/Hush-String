@@ -27,6 +27,7 @@ const Navbar = () => {
   const pathname = usePathname();
   const [dropdown, setDropdown] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [sidebar, setSidebar] = useState(false);
 
   useEffect(() => {
     checkLocalStoreageOnReloadOrRevisit();
@@ -35,13 +36,14 @@ const Navbar = () => {
   }, [pathname]);
 
   const toggleCart = () => {
-    if (ref.current.classList.contains("translate-x-full")) {
-      ref.current.classList.remove("translate-x-full");
-      ref.current.classList.add("translate-x-0");
-    } else {
-      ref.current.classList.remove("translate-x-0");
-      ref.current.classList.add("translate-x-full");
-    }
+    // if (ref.current.classList.contains("translate-x-full")) {
+    //   ref.current.classList.remove("translate-x-full");
+    //   ref.current.classList.add("translate-x-0");
+    // } else {
+    //   ref.current.classList.remove("translate-x-0");
+    //   ref.current.classList.add("translate-x-full");
+    // }
+    setSidebar(!sidebar);
   };
 
   return (
@@ -51,9 +53,39 @@ const Navbar = () => {
         progress={progress}
         onLoaderFinished={() => setProgress(0)}
         waitingTime={400}
-      
       />
-      <div className="sticky top-0 z-10 bg-white">
+      <span
+        onMouseOver={() => setDropdown(true)}
+        onMouseLeave={() => setDropdown(false)}
+      >
+        {dropdown && (
+          <div className="absolute right-9 bg-white shadow-xl top-12 rounded px-5 py-2 w-32 z-40">
+            <ul>
+              <Link href="myaccount">
+                <li className="py-1 text-sm hover:text-blue-700 font-bold">
+                  My Account
+                </li>
+              </Link>
+              <Link href="orders">
+                <li className="py-1 text-sm hover:text-blue-700 font-bold">
+                  Orders
+                </li>
+              </Link>
+              <li
+                onClick={logout}
+                className="py-1 text-sm hover:text-blue-700 font-bold"
+              >
+                Logout
+              </li>
+            </ul>
+          </div>
+        )}
+      </span>
+      <div
+        className={`sticky top-0 z-10 bg-white ${
+          !sidebar ? "overflow-hidden" : ""
+        }`}
+      >
         <header className="text-gray-600 body-font shadow-md">
           <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
             <Link
@@ -77,33 +109,6 @@ const Navbar = () => {
               </Link>
             </nav>
             <div className="flex cart absolute right-0 mx-4 cursor-pointer items-center">
-              <span
-                onMouseOver={() => setDropdown(true)}
-                onMouseLeave={() => setDropdown(false)}
-              >
-                {dropdown && (
-                  <div className="absolute right-9 bg-white shadow-xl top-6 rounded px-5 py-2 w-32">
-                    <ul>
-                      <Link href="myaccount">
-                        <li className="py-1 text-sm hover:text-blue-700 font-bold">
-                          My Account
-                        </li>
-                      </Link>
-                      <Link href="orders">
-                        <li className="py-1 text-sm hover:text-blue-700 font-bold">
-                          Orders
-                        </li>
-                      </Link>
-                      <li
-                        onClick={logout}
-                        className="py-1 text-sm hover:text-blue-700 font-bold"
-                      >
-                        Logout
-                      </li>
-                    </ul>
-                  </div>
-                )}
-              </span>
               {user.value && (
                 <MdAccountCircle
                   onMouseOver={() => setDropdown(true)}
@@ -111,6 +116,7 @@ const Navbar = () => {
                   className="text-2xl mx-2"
                 />
               )}
+
               {!user.value && (
                 <Link href={"/login"}>
                   <button className="flex mr-2 text-white bg-blue-500 border-0 py-2 px-2 md:px-4 focus:outline-none hover:bg-blue-600 rounded">
@@ -126,10 +132,8 @@ const Navbar = () => {
 
             <div
               ref={ref}
-              className={`w-72 h-[100vh] sideCart overflow-y-scroll absolute top-0 right-0 px-7 py-10 transform transition-transform ${
-                Object.keys(cart).length !== 0
-                  ? "translate-x-0"
-                  : "translate-x-full"
+              className={`w-72 h-[100vh] sideCart overflow-y-scroll absolute top-0 px-7 py-10 transition-all ${
+                sidebar ? "right-0" : "-right-96"
               } bg-blue-100`}
             >
               <h2 className="font-bold text-xl text-center">Shopping Cart</h2>
@@ -145,9 +149,9 @@ const Navbar = () => {
                     Your cart is empty. Add items to cart.
                   </div>
                 )}
-                {Object.keys(cart).map((item) => {
+                {Object.keys(cart).map((item,index) => {
                   return (
-                    <li key={item}>
+                    <li key={index}>
                       <div className="item flex my-5">
                         <div className="w-2/3 font-semibold">
                           {cart[item].name} ({cart[item].variant})
@@ -182,14 +186,18 @@ const Navbar = () => {
               <div className="flex -mt-12">
                 {/* minus margin for reduce space between button and text(0 cart text)*/}
                 <Link href="/checkout">
-                  <button className="flex mr-2 mt-16 text-white bg-blue-500 border-0 py-2 px-2 focus:outline-none hover:bg-blue-600 rounded text-sm">
+                  <button
+                    className="flex mr-2 mt-16 text-white bg-blue-500 border-0 py-2 px-2 focus:outline-none hover:bg-blue-600 rounded text-sm disabled:bg-blue-300"
+                    disabled={Object.keys(cart).length === 0}
+                  >
                     <BsFillBagCheckFill className="m-1" />
                     Checkout
                   </button>
                 </Link>
                 <button
                   onClick={clearCart}
-                  className="flex mr-2 mt-16 text-white bg-blue-500 border-0 py-2 px-2 focus:outline-none hover:bg-blue-600 rounded text-sm"
+                  className="flex mr-2 mt-16 text-white bg-blue-500 border-0 py-2 px-2 focus:outline-none hover:bg-blue-600 rounded text-sm disabled:bg-blue-300"
+                  disabled={Object.keys(cart).length === 0}
                 >
                   Clear Cart
                 </button>

@@ -31,5 +31,6 @@ export async function POST(request) {
 
 console.log(`/order?id=${order._id}`);
 //ERROR: not redirecting to order page
+// TODO": redirect to order page
   redirect(`/order?id=${order._id}`);
 }

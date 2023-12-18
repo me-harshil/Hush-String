@@ -4,8 +4,10 @@ import Image from "next/image";
 import { CartContext } from "@/app/Context/cart-provider";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from "next/navigation";
 
 const ProductInfo = ({ product, variants }) => {
+  const router = useRouter();
   const { addToCart, buyNow } = useContext(CartContext);
 
   const [pincode, setPincode] = useState("");
@@ -50,7 +52,7 @@ const ProductInfo = ({ product, variants }) => {
   const refreshPage = (newColor) => {
     setColor(newColor);
     let url = `http://localhost:3000/product/${variants[newColor].slug}`;
-    window.location = url;
+    router.push(url);
   };
   return (
     <>
