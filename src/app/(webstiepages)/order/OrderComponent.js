@@ -65,7 +65,8 @@ const OrderComponent = ({ order }) => {
                         {product[key].quantity}
                       </span>
                       <span className="m-auto text-gray-900">
-                        ₹{product[key].price}
+                        ₹{product[key].price} X {product[key].quantity} = ₹
+                        {product[key].price * product[key].quantity}
                       </span>
                     </div>
                   );

@@ -149,7 +149,7 @@ const Navbar = () => {
                     Your cart is empty. Add items to cart.
                   </div>
                 )}
-                {Object.keys(cart).map((item,index) => {
+                {Object.keys(cart).map((item, index) => {
                   return (
                     <li key={index}>
                       <div className="item flex my-5">

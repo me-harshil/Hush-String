@@ -28,11 +28,19 @@ export async function POST(request) {
       });
     }
     if (!product || product.price !== cart[item].price) {
-      return Response.json({ success: false, message: "Cart is tampered" });
+      return Response.json({
+        success: false,
+        message: "Cart is tampered",
+        cartClear: true,
+      });
     }
   }
   if (sumTotal !== data.subTotal) {
-    return Response.json({ success: false, message: "Cart is tampered" });
+    return Response.json({
+      success: false,
+      message: "Cart is tampered",
+      cartClear: true,
+    });
   }
 
   // Create Order Object
