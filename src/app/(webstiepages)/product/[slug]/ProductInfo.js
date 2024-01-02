@@ -202,8 +202,8 @@ const ProductInfo = ({ product, variants }) => {
                       value={color}
                       className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500 text-base pl-3 pr-10"
                     >
-                      {Object.keys(variants).map((item) => {
-                        return <option key={variants[item]}>{item}</option>;
+                      {Object.keys(variants).map((item,index) => {
+                        return <option key={index}>{item}</option>;
                       })}
                     </select>
                     <span className="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">

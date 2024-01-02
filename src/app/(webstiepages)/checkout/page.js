@@ -14,21 +14,53 @@ const Checkout = () => {
   const { cart, subTotal, clearCart, addToCart, removeFromCart } =
     useContext(CartContext);
 
+  const getPincode = async (pincode) => {
+    let pins = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincode`);
+    let pinsJson = await pins.json();
+    if (pinsJson[pincode]) {
+      setCity(pinsJson[pincode][0]);
+      setState(pinsJson[pincode][1]);
+    } else {
+      setCity("");
+      setState("");
+    }
+  };
+
+  const fetchUser = async (token) => {
+    let data = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/getuser`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ token }),
+    });
+
+    let res = await data.json();
+    setName(res.name);
+    setAddress(res.address);
+    setPhone(res.phone);
+    setPincode(res.pincode);
+    getPincode(res.pincode);
+  };
+
   useEffect(() => {
+    const token = localStorage.getItem("token");
+
     if (
       localStorage.getItem("email") === null ||
       localStorage.getItem("token") === null
     ) {
       router.push("/login");
     }
-    if (Object.keys(cart).length === 0) {
-      router.push("/");
-    }
+
+    setEmail(localStorage.getItem("email"));
+    fetchUser(token);
+
     //eslint-disable-next-line
   }, []);
 
   const [name, setName] = useState("");
-  const [email, setEmail] = useState(localStorage.getItem("email"));
+  const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
   const [city, setCity] = useState("");
@@ -51,15 +83,7 @@ const Checkout = () => {
       case "pincode":
         setPincode(value);
         if (value.length === 6) {
-          let pins = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincode`);
-          let pinsJson = await pins.json();
-          if (pinsJson[value]) {
-            setCity(pinsJson[value][0]);
-            setState(pinsJson[value][1]);
-          }
-        } else {
-          setCity("");
-          setState("");
+          getPincode(value);
         }
         break;
       default:
@@ -102,6 +126,8 @@ const Checkout = () => {
           address,
           pincode,
           phone,
+          city,
+          state,
         }),
       }
     );

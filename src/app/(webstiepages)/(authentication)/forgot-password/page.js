@@ -7,9 +7,6 @@ import { useRouter } from "next/navigation";
 const ForgotPassword = () => {
   const router = useRouter();
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      router.push("/");
-    }
     //eslint-disable-next-line
   }, []);
   return (

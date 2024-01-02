@@ -48,8 +48,9 @@ export async function POST(request) {
     email: data.email,
     orderId: data.orderId,
     amount: data.subTotal,
-    address: data.address,
+    address: `${data.address}, ${data.city}, ${data.state}, ${data.pincode}`,
     products: data.cart,
+    phone: data.phone,
   });
 
   await order.save();

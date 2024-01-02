@@ -61,12 +61,12 @@ const Navbar = () => {
         {dropdown && (
           <div className="fixed right-9 bg-white shadow-xl top-12 rounded px-5 py-2 w-32 z-40">
             <ul>
-              <Link href="myaccount">
+              <Link href="/myaccount">
                 <li className="py-1 text-sm hover:text-blue-700 font-bold">
                   My Account
                 </li>
               </Link>
-              <Link href="orders">
+              <Link href="/orders">
                 <li className="py-1 text-sm hover:text-blue-700 font-bold">
                   My Orders
                 </li>

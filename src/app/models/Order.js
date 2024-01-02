@@ -10,6 +10,7 @@ const OrderSchema = new mongoose.Schema(
     address: { type: Object, required: true },
     status: { type: String, default: "initiated" },
     deliveryStatus: { type: String, default: "pending" },
+    phone: { type: String, required: true },
   },
   { timestamps: true }
 );
