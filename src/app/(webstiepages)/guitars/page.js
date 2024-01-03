@@ -27,7 +27,7 @@ async function getProducts() {
 const Guitars = async () => {
   const guitar = await getProducts();
   return (
-    <div>
+    <div className="min-h-screen">
       <section className="text-gray-600 body-font">
         <div className="container px-5 py-24 mx-auto">
           {Object.keys(guitar).length === 0 && (

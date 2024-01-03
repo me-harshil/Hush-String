@@ -28,7 +28,7 @@ const Ukulele = async () => {
   const ukulele = await getProducts();
 
   return (
-    <div>
+    <div className="min-h-screen">
       <section className="text-gray-600 body-font">
         <div className="container px-5 py-24 mx-auto">
           {Object.keys(ukulele).length === 0 && (

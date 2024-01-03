@@ -27,20 +27,24 @@ const Checkout = () => {
   };
 
   const fetchUser = async (token) => {
-    let data = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/getuser`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ token }),
-    });
+    try {
+      let data = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/getuser`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token }),
+      });
 
-    let res = await data.json();
-    setName(res.name);
-    setAddress(res.address);
-    setPhone(res.phone);
-    setPincode(res.pincode);
-    getPincode(res.pincode);
+      let res = await data.json();
+      setName(res.name);
+      setAddress(res.address);
+      setPhone(res.phone);
+      setPincode(res.pincode);
+      getPincode(res.pincode);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -51,10 +55,10 @@ const Checkout = () => {
       localStorage.getItem("token") === null
     ) {
       router.push("/login");
+    } else {
+      setEmail(localStorage.getItem("email"));
+      fetchUser(token);
     }
-
-    setEmail(localStorage.getItem("email"));
-    fetchUser(token);
 
     //eslint-disable-next-line
   }, []);

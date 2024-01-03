@@ -26,8 +26,8 @@ export async function POST(request) {
 
       return Response.json({ success: true, token, email: user.email });
     }
-    return Response.json({ error: "Invalid Credentials!" });
+    return Response.json({ success: false, error: "Invalid Credentials!" });
   } catch (error) {
-    return Response.json({ error: error.message });
+    return Response.json({ success: false, error: error.message });
   }
 }

@@ -74,7 +74,7 @@ const Login = () => {
     }
   };
   return (
-    <div>
+    <div className="min-h-screen">
       <ToastContainer
         position="top-center"
         autoClose={3000}
