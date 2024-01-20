@@ -47,7 +47,7 @@ const Navbar = () => {
   };
 
   return (
-    <>
+    <div className="navbar" >
       <LoadingBar
         color="#3B82F6"
         progress={progress}
@@ -206,7 +206,7 @@ const Navbar = () => {
           </div>
         </header>
       </div>
-    </>
+    </div>
   );
 };
 
